@@ -68,7 +68,7 @@ Create TRIGGER ORDER_CHECK_STATUS
 create or replace function Check_Started_Status_Order() returns trigger as
 $$
 begin
-   if (New.status != 'Поиск курьер' or New.courier_id is not null) then
+   if (New.status != 'Поиск курьера' or New.courier_id is not null) then
        raise exception 'you cannot create an order with this status or with a specified courier';
 end if;
 return NEW;
