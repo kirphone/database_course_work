@@ -6,7 +6,7 @@ drop table if exists "order",
                      shop_company,
                      status_order,
                      account,
-                     product_shop
+                     product_shop,
                      message,
                      review,
                      order_product;
