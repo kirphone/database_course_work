@@ -3,8 +3,6 @@ import psycopg2
 import os
 import random
 
-response = requests.get('https://fish-text.ru/get')
-
 n = int(input("Введите число сообщений"))
 # load_dotenv()
 
@@ -31,3 +29,5 @@ for i in range(n):
 connection.commit()
 cursor.close()
 connection.close()
+
+print("Message added")
