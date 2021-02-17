@@ -25,11 +25,11 @@ INSERT INTO shop VALUES (DEFAULT, NULL, 59.90303899999999, 29.76829, 'Лента
 
 
 INSERT INTO product_category VALUES ('Молочные');
-INSERT INTO product_category VALUES ('Мясо');
+INSERT INTO product_category VALUES ('Мясо и рыба');
 INSERT INTO product_category VALUES ('Вода');
 INSERT INTO product_category VALUES ('Алкоголь');
 INSERT INTO product_category VALUES ('Бакалея');
-INSERT INTO product_category VALUES ('Фрукты');
+INSERT INTO product_category VALUES ('Фрукты и овощи');
 
 
 INSERT INTO product VALUES (DEFAULT, 'Фарш САМСОН говяжий рубленый кат.А охл.жирн.7.5%, Россия, 400 г', NULL, 'Мясо');

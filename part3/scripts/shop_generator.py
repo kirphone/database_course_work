@@ -3,8 +3,6 @@ import os, json
 from dotenv import load_dotenv
 from urllib.parse import unquote
 
-from requests.models import Response
-
 
 load_dotenv()
     
@@ -27,6 +25,6 @@ def getDiksyShops():
     return responce['Санкт-Петербург']['cities']['Санкт-Петербург']['shops']
 
 
-def create_shop(cursor):
+def create_shops(cursor):
         for shop in getDiksyShops():
             cursor.execute(f"INSERT INTO shop VALUES (DEFAULT, NULL, {shop['latitude']}, {shop['longitude']}, 'Дикси')")
