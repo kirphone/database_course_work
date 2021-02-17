@@ -7,6 +7,7 @@ name = "pypi"
 python-dotenv = "*"
 names = "*"
 psycopg2-binary = "*"
+requests = "*"
 
 [dev-packages]
 
