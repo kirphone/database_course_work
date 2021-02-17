@@ -27,25 +27,6 @@ $$
 
 /*
 
-   Пользователь выбирает сеть магазинов и выдает список сетей магазинов с id.
-
-*/
-
-create or replace function select_shop_company_with_id()
-    returns table
-            (
-                shop_company_name varchar(31)
-            )
-as
-$$
-begin
-    return query select * from shop_company;
-end;
-$$
-    LANGUAGE plpgsql;
-
-/*
-
    Пользователь выбирает магазин и выдает список магазинов с id.
 
 */
