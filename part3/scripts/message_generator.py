@@ -3,8 +3,6 @@ import psycopg2
 import os
 import random
 
-from sqlite3 import OperationalError
-
 response = requests.get('https://fish-text.ru/get')
 
 n = int(input("Введите число сообщений"))
