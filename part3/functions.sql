@@ -11,7 +11,7 @@
 
 */
 
-create or replace function Create_User(
+create or replace function create_user(
     name_in varchar(63),
     phone_in varchar(31),
     email_in varchar(63),
@@ -24,32 +24,6 @@ begin
 end
 $$
     LANGUAGE plpgsql;
-
-/*
-
-   Пользователь выбирает магазин и выдает список магазинов с id.
-
-*/
-
-create or replace function select_shop_with_id(
-    shop_company_name varchar(31)
-)
-    returns table
-            (
-                shop_id   int,
-                shop_name varchar(31)
-            )
-as
-$$
-begin
-    if (shop_company_name is null) then
-        return query select s.id, s.name from shop s where s.company_name is null;
-    end if;
-    return query select s.id, s.name from shop s where s.company_name = shop_company_name;
-end;
-$$
-    LANGUAGE plpgsql;
-
 
 /*
 
@@ -95,7 +69,7 @@ create or replace function create_order(
     address_lng_in double precision,
     customer_id_in int
 )
-    returns text
+    returns int
 as
 $$
 declare
@@ -106,5 +80,49 @@ begin
     returning id into order_id;
     return order_id;
 end;
+$$
+    LANGUAGE plpgsql;
+
+/*
+
+   Добавляем в корзину заказанный товар
+
+*/
+
+create or replace function add_order_product(
+    product_id_in int,
+    count int,
+    price_in int,
+    need_confirm_in boolean,
+    order_id_in int
+)
+    returns text
+as
+$$
+begin
+    insert into order_product(order_id, product_id, price, product_count, need_confirm)
+    values (order_id_in, product_id_in, price_in, count, need_confirm_in);
+    return 'Added product to order';
+end
+$$
+    LANGUAGE plpgsql;
+
+/*
+    Создаем сообщение
+*/
+
+create or replace function create_message(
+    sender_id_in int,
+    order_id_in int,
+    message text
+)
+    returns text
+as
+$$
+begin
+    insert into message(message_text, sender_id, order_id, send_datetime)
+    values (message, sender_id_in, order_id_in, current_timestamp);
+    return 'message created';
+end
 $$
     LANGUAGE plpgsql;
