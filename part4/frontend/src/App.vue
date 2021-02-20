@@ -1,26 +1,47 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <LoginAndRegistrationForm/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import LoginAndRegistrationForm from "@/components/auth/LoginAndRegistrationForm";
+import store from "@/store";
 
 export default {
   name: 'App',
+  store,
   components: {
-    HelloWorld
+    LoginAndRegistrationForm
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+@import url("assets/css/form.css");
+
+@font-face {
+  font-family: ElMessiri;
+  src: url('assets/fonts/ElMessiri-Bold.ttf');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: ElMessiri;
+  src: url('assets/fonts/ElMessiri-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: ElMessiri, 'Comic Sans MS', fantasy;
+  font-weight: normal;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #e6f4fd;
 }
 </style>
