@@ -22,8 +22,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private RestAuthenticationEntryPoint authenticationEntryPoint;
 
-   @Bean
-    public AccountDetailsService accountDetailsService() {
+    @Bean
+    public AccountDetailsService myAccountDetailsService() {
         return new AccountDetailsService();
     };
 
@@ -35,7 +35,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(accountDetailsService()).passwordEncoder(encoder());
+        auth.userDetailsService(myAccountDetailsService()).passwordEncoder(encoder());
     }
 
     @Bean

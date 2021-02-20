@@ -1,5 +1,8 @@
 package com.itmo.backend.security;
 
+import com.itmo.backend.controllers.AuthController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +21,9 @@ import java.util.Optional;
 public class JwtTokenFilter extends GenericFilterBean {
 
     private final JwtTokenProvider jwtTokenProvider;
-    
+
+    private final Logger logger = LoggerFactory.getLogger(JwtTokenFilter.class);
+
     public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
@@ -37,9 +42,11 @@ public class JwtTokenFilter extends GenericFilterBean {
                     "Expired or invalid JWT token");
         } else {
             Authentication auth = jwtTokenProvider.getAuthentication(token.get());
-            String[] pathParts = ((HttpServletRequest)req).getServletPath().split("/");
+            String servletPath = ((HttpServletRequest)req).getServletPath();
+            logger.info("Request. ServletPath = {}", servletPath);
+            String[] pathParts = servletPath.split("/");
             if(pathParts.length >= 3 && pathParts[1].equals("users") &&
-            !pathParts[2].equals("id" + ((AccountPrincipal)auth.getDetails()).getId().toString())){
+            !pathParts[2].equals("id" + ((AccountPrincipal)auth.getPrincipal()).getId().toString())){
                 makeResponse((HttpServletResponse)res, HttpServletResponse.SC_FORBIDDEN, "This is not your resource");
             } else {
                 SecurityContextHolder.getContext().setAuthentication(auth);
