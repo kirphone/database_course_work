@@ -1,17 +1,20 @@
 <template>
-  <LoginAndRegistrationForm/>
+  <div id="app">
+    <base-header/>
+    <router-view/>
+  </div>
 </template>
 
 <script>
 
-import LoginAndRegistrationForm from "@/components/auth/LoginAndRegistrationForm";
 import store from "@/store";
+import BaseHeader from "@/components/BaseHeader";
 
 export default {
   name: 'App',
   store,
   components: {
-    LoginAndRegistrationForm
+    BaseHeader
   }
 }
 </script>
