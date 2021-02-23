@@ -48,7 +48,7 @@ public class AuthController {
         String email = data.getEmail();
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, data.getPassword()));
-            String token = jwtTokenProvider.createToken(email, new ArrayList<>() {{
+            String token = jwtTokenProvider.createToken(email, new ArrayList<String>() {{
                 add("User");
             }});
             Map<Object, Object> model = new HashMap<>();

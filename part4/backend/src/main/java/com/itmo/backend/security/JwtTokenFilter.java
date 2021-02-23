@@ -32,7 +32,7 @@ public class JwtTokenFilter extends GenericFilterBean {
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain)
             throws IOException, ServletException {
         Optional<String> token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
-        if(token.isEmpty()) {
+        if(!token.isPresent()) {
             filterChain.doFilter(req, res);
             return;
         }

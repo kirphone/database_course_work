@@ -1,5 +1,8 @@
 package com.itmo.backend.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +13,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "product_shop")
+@JsonIgnoreProperties(value = {"shop"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -18,10 +22,10 @@ public class ProductShopEntity {
     @EmbeddedId
     private ProductShopKey id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("productId")
     @JoinColumn(name = "product_id")
-    private ShopEntity product;
+    private ProductEntity product;
 
     @Override
     public boolean equals(Object o) {
@@ -36,7 +40,7 @@ public class ProductShopEntity {
         return Objects.hash(id, price);
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("shopId")
     @JoinColumn(name = "shop_id")
     private ShopEntity shop;
@@ -44,29 +48,3 @@ public class ProductShopEntity {
     private Float price;
 }
 
-@Embeddable
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
-class ProductShopKey implements Serializable {
-
-    @Column(name = "product_id")
-    private Integer productId;
-
-    @Column(name = "shop_id")
-    private Integer shopId;
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof ProductShopKey) {
-            ProductShopKey other = (ProductShopKey) obj;
-            return productId.equals(other.productId) && shopId.equals(other.shopId);
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return productId.hashCode() + shopId.hashCode();
-    }
-}
