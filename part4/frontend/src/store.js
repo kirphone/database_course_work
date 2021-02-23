@@ -6,7 +6,7 @@ const store = createStore({
     state: {
         token : "",
         tokenDate : null,
-
+        isClient : true
     },
     mutations: {
         setToken(state, tokenString) {
@@ -16,6 +16,10 @@ const store = createStore({
         removeToken(state){
           state.token = "";
           state.tokenDate = 0;
+        },
+        isClient(state, boolStatus){
+            //boolStatus - true = Client , false = Courier
+            state.isClient = boolStatus
         }
     },
     plugins: [createPersistedState()],

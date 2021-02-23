@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from "vue-router";
 import LoginAndRegistration from "./components/auth/LoginAndRegistration";
 import Home from "./components/home/Home";
 import NotFoundError from "./components/NotFoundError";
+import ChooseRole from "./components/role/ChooseRole";
 import store from "./store";
 
 const router = createRouter({
@@ -23,6 +24,17 @@ const router = createRouter({
             path: '/home',
             name: "home",
             component: Home,
+            beforeEnter: (to, from, next) => {
+                if (hasToken())
+                    next();
+                else
+                    next("/auth");
+            }
+        },
+        {
+            path: '/choose-role',
+            name: "ChooseRole",
+            component: ChooseRole,
             beforeEnter: (to, from, next) => {
                 if (hasToken())
                     next();
