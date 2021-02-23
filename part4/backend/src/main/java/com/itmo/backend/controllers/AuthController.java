@@ -17,10 +17,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.DataBinder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,6 +82,11 @@ public class AuthController {
         accountRepository.save(newAccount);
         logger.info("Зарегистрирован пользователь с почтой: {}", email);
         return login(data);
+    }
+    
+    @GetMapping("/istokenvalid")
+    public ResponseEntity<String> isTokenValid(){
+        return ok("True");
     }
 }
 

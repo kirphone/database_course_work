@@ -47,7 +47,7 @@ const router = createRouter({
 });
 
 function hasToken(){
-    return (store.state.token !== "") && (store.state.tokenDate > new Date().getTime());
+    return (store.state.token !== "") && (store.state.tokenDate > new Date().getTime())
 }
 
 export default router

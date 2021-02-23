@@ -5,7 +5,8 @@ import createPersistedState from "vuex-persistedstate";
 const store = createStore({
     state: {
         token : "",
-        tokenDate : null
+        tokenDate : null,
+
     },
     mutations: {
         setToken(state, tokenString) {
@@ -17,7 +18,8 @@ const store = createStore({
           state.tokenDate = 0;
         }
     },
-    plugins: [createPersistedState()]
+    plugins: [createPersistedState()],
+    devtools: true
 });
 
 export default store

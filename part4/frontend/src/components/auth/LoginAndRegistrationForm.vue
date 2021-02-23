@@ -50,7 +50,7 @@ export default {
   props: {
     formName: String
   },
-  data: function () {
+  data() {
     return {
       password: "",
       email: "",
@@ -73,13 +73,14 @@ export default {
     validateForm: function (e) {
       /*if (!/^[a-z][a-z\d]*$/i.test(this.login))
         this.errorMessageValue = "Логин может состоять из латинских букв и цифр, но не может начинаться с цифры";
-      else */if (!/^[a-z\d]*$/i.test(this.password))
+      else */
+      if (!/^[a-z\d]*$/i.test(this.password))
         this.errorMessageValue = "Пароль может состоять из латинских букв и цифр";
       else if (this.formName === "registration" && this.password !== this.confirmPassword)
         this.errorMessageValue = "Пароли не совпадают";
       else {
         this.isErrorMessageHidden = true;
-        if(this.formName === "login")
+        if (this.formName === "login")
           this.processLogin();
         else this.processRegister();
       }
@@ -95,6 +96,7 @@ export default {
       })
           .then(response => {
             this.$store.commit("setToken", response.data.token);
+            this.$router.push("home");
             /*axios({
               method: 'get',
               url: "api/user/" + this.login + "/points",
@@ -119,8 +121,8 @@ export default {
       axios.post("api/auth/registration", {
         "email": this.email,
         "password": this.password,
-        "phone" : this.phone,
-        "name" : this.name
+        "phone": this.phone,
+        "name": this.name
       })
           .then(response => {
             this.$store.commit("setToken", response.data.token);
