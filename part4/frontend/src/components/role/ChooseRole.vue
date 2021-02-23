@@ -38,7 +38,7 @@ export default {
           this.$router.push("orders-courier");
         }else{
           this.$store.commit("isClient", true);
-          this.$router.push("make-order");
+          this.$router.push("home");
         }
       }
     }
