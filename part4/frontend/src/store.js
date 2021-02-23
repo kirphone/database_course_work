@@ -6,7 +6,10 @@ const store = createStore({
     state: {
         token : "",
         tokenDate : null,
-        isClient : true
+        isClient : true,
+        order : {
+            shopCompanyName : ""
+        }
     },
     mutations: {
         setToken(state, tokenString) {
@@ -20,6 +23,9 @@ const store = createStore({
         isClient(state, boolStatus){
             //boolStatus - true = Client , false = Courier
             state.isClient = boolStatus
+        },
+        selectShop(state, shopCompanyName){
+            state.shopCompanyName = shopCompanyName
         }
     },
     plugins: [createPersistedState()],

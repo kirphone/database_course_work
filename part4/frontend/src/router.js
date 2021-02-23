@@ -3,6 +3,7 @@ import LoginAndRegistration from "./components/auth/LoginAndRegistration";
 import Home from "./components/home/Home";
 import NotFoundError from "./components/NotFoundError";
 import ChooseRole from "./components/role/ChooseRole";
+import ShopCompaniesList from "@/components/shop/ShopCompaniesList";
 import store from "./store";
 
 const router = createRouter({
@@ -15,8 +16,7 @@ const router = createRouter({
             beforeEnter: (to, from, next) => {
                 if (hasToken()) {
                     next("/home");
-                }
-                else
+                } else
                     next();
             }
         },
@@ -43,6 +43,17 @@ const router = createRouter({
             }
         },
         {
+            path: "/shop-company",
+            name: "ShopCompaniesList",
+            component: ShopCompaniesList,
+            beforeEnter: (to, from, next) => {
+                if (hasToken())
+                    next();
+                else
+                    next("/auth");
+            }
+        },
+        {
             path: "/",
             beforeEnter: (to, from, next) => {
                 if (hasToken())
@@ -58,7 +69,7 @@ const router = createRouter({
     ]
 });
 
-function hasToken(){
+function hasToken() {
     return (store.state.token !== "") && (store.state.tokenDate > new Date().getTime())
 }
 
