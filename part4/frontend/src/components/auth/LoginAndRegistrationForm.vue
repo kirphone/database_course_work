@@ -96,7 +96,7 @@ export default {
       })
           .then(response => {
             this.$store.commit("setToken", response.data.token);
-            this.$router.push("home");
+            this.$router.push("choose-role");
             /*axios({
               method: 'get',
               url: "api/user/" + this.login + "/points",
