@@ -6,8 +6,8 @@
         :center="center"
         :zoom="15"
         ref="mapRef">
-      <Marker v-on:click="step(mar.id)" v-for="mar in markers" :key="mar.id"
-              :options="{ position: {lat : mar.addressLat, lng: mar.addressLng} }"/>
+      <Marker v-on:click="step(mar[1])" v-for="mar in markers" :key="mar.id"
+              :options="{ position: {lat : mar[0].addressLat, lng: mar[0].addressLng} }"/>
     </GoogleMap>
   </div>
 </template>
@@ -26,8 +26,8 @@ export default {
     }
   },
   methods: {
-    step: function (shopId) {
-      this.$store.commit('setShopId', shopId)
+    step: function (orderId) {
+      this.$store.commit('setOrderId', orderId)
       this.$router.push("/order-get")
     }
   },
@@ -35,7 +35,7 @@ export default {
     this.downloadApiKey()
     axios_config.get("/user/orders/all").then(resp => {
       this.markers = resp.data
-      console.log(this.markers)
+      console.log(resp.data)
     })
     navigator.geolocation.getCurrentPosition(pos => {
       this.center = {lat: pos.coords.latitude, lng: pos.coords.longitude};
