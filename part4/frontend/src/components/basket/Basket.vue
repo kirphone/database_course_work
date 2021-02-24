@@ -20,6 +20,7 @@
       <td>
         <button v-on:click="add(item.id.productId,item.price)">Add</button>
         <button v-on:click="remove(item.id.productId,item.price)">Delete</button>
+        <input type="checkbox" @click="addConfirm(item.id.productId)"/>
       </td>
     </tr>
   </table>
@@ -27,7 +28,7 @@
     <input type="text" max="500" min="0" v-model="priceDelivery">
     <input type="range" min="0" max="500" step="1" v-model="priceDelivery">
   </div>
-  <h1>Всего : {{ price + (isNaN(priceDelivery) || priceDelivery==="" ? 0 : Number.parseInt(priceDelivery)) }}</h1>
+  <h1>Всего : {{ price + (isNaN(priceDelivery) || priceDelivery === "" ? 0 : Number.parseInt(priceDelivery)) }}</h1>
   <h1 style="color: red">{{ errorMessage }}</h1>
   <button v-on:click="next()" class="but">
     <div>Оформить заказ</div>
@@ -42,8 +43,6 @@ export default {
   name: "Basket",
   methods: {
     add: function (id, price) {
-
-      //console.log(this.hashTable)
       if (this.hashTable[id] == null) {
         this.hashTable[id] = 1
       } else {
@@ -58,11 +57,43 @@ export default {
         this.hashTable[id] -= 1;
       }
     },
+    addConfirm: function (id) {
+      if (this.confirm[id] == null) {
+        this.confirm[id] = true
+        return
+      }
+      this.confirm[id] = !this.confirm[id]
+    },
     next: function () {
-      if (isNaN(this.priceDelivery) || this.priceDelivery > 500 || this.priceDelivery < 0) {
+      if (isNaN(this.priceDelivery) || this.priceDelivery > 500) {
+        this.errorMessage = "Неккоректная цена доставки"
+      } else if (this.priceDelivery < 0) {
         this.errorMessage = "Неккоректная цена доставки"
       } else {
-        this.$router.push("/orders")
+        navigator.geolocation.getCurrentPosition(pos => {
+          var a = {lat: pos.coords.latitude, lng: pos.coords.longitude};
+          console.log(a)
+          var products = []
+          this.hashTable.forEach((val, key) => {
+            products.push({
+              "productId": key,
+              "productCount": val,
+              "needConfirm": (this.confirm[key] != null)
+            })
+          })
+          axios_config.post('/user/orders', {
+            'lat': a.lat,
+            'lng': a.lng,
+            'shopId': this.$store.state.shopId,
+            'products': products
+          }).then(resp => {
+                console.log(resp.data)
+                this.$router.push("/orders")
+              }
+          )
+        }, err => {
+          console.log(err);
+        })
       }
     }
 
@@ -85,6 +116,7 @@ export default {
   },
   data() {
     return {
+      confirm: [],
       errorMessage: "",
       priceDelivery: 50,
       price: 0,

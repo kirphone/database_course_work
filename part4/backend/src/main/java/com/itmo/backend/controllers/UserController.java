@@ -59,12 +59,13 @@ public class UserController {
     }
 
     @GetMapping("/order/{id}/messages")
-    public ResponseEntity<List<MessageEntity>> getMessagesByOrder(@PathVariable("id") Integer orderId){
+    public ResponseEntity<List<MessageEntity>> getMessagesByOrder(@PathVariable("id") Integer orderId) {
         return ok(messageRepository.findByOrderId(orderId));
     }
 
     @PostMapping("/orders")
-    public ResponseEntity<HashMap<String, Integer>> addOrder(@RequestBody OrderRequest req){
+    public ResponseEntity<HashMap<String, Integer>> addOrder(@RequestBody OrderRequest req) {
+        logger.info("Add order " + req);
         Integer userId = ((AccountPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         OrderEntity order = OrderEntity.builder().customer(accountRepository.findById(userId).get())
                 .address(new AddressEmbeddedEntity(req.getLat(), req.getLng()))
@@ -81,21 +82,21 @@ public class UserController {
                     .product(productRepository.findById(product.getProductId()).get()).build();
             orderProductRepository.save(note);
         });
-        return ok(new HashMap<String, Integer>(){{
+        return ok(new HashMap<String, Integer>() {{
             put("orderId", orderId);
         }});
     }
 
     @PostMapping("/order/{id}/messages")
-    public ResponseEntity<HashMap<String, Integer>> addMessage(@PathVariable("id") Integer orderId, @RequestBody String messageText){
-       logger.info("add message : "+ messageText);
+    public ResponseEntity<HashMap<String, Integer>> addMessage(@PathVariable("id") Integer orderId, @RequestBody String messageText) {
+        logger.info("add message : " + messageText);
 
         Integer userId = ((AccountPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         MessageEntity message = MessageEntity.builder().text(messageText).sendTime(OffsetDateTime.now())
                 .sender(accountRepository.findById(userId).get())
                 .order(orderRepository.findById(orderId).get()).build();
         Integer messageId = messageRepository.save(message).getId();
-        return ok(new HashMap<String, Integer>(){{
+        return ok(new HashMap<String, Integer>() {{
             put("messageId", messageId);
         }});
     }
@@ -115,7 +116,7 @@ class OrderRequest {
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class ProductToAdd{
+class ProductToAdd {
 
     private Integer productId;
 
