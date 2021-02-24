@@ -1,6 +1,25 @@
 <template>
   <button @click="takeOrder()">Take order</button>
 
+  <H1>Описание заказа</H1>
+  <table>
+    <tr>
+      <th>Магазин</th>
+      <th>Имя покупателя</th>
+      <th>Телефон покупателя</th>
+    </tr>
+
+    <tr>
+      <td>{{ item.product.name }}</td>
+      <td>{{ item.product.description }}</td>
+      <td>{{ item.product.category.name }}</td>
+    </tr>
+  </table>
+
+  <h1>Корзина</h1>
+<ul>
+  <li :key="item.id" v-for="item in basket"></li>
+</ul>
 
   <div class="messages">
     <button class="but-1" @click="reFetchMess()">Обновить</button>
@@ -24,6 +43,8 @@ export default {
   name: "OrderStatus",
   data() {
     return {
+      basket : [],
+      orderInfo : [],
       mess: "",
       messages: [],
       showMessageOrder: false,
@@ -34,7 +55,7 @@ export default {
   },
   methods: {
     takeOrder: function () {
-      //axios_config.post().then()
+      axios_config.post(`/user/order/${this.$store.state.orderId}/change_status`)
     },
     sendMessage: function () {
       axios_config.post(`/user/order/${this.$store.state.orderId}/messages`, this.mess)
