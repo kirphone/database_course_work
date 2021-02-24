@@ -88,6 +88,8 @@ public class UserController {
 
     @PostMapping("/order/{id}/messages")
     public ResponseEntity<HashMap<String, Integer>> addMessage(@PathVariable("id") Integer orderId, @RequestBody String messageText){
+       logger.info("add message : "+ messageText);
+
         Integer userId = ((AccountPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         MessageEntity message = MessageEntity.builder().text(messageText).sendTime(OffsetDateTime.now())
                 .sender(accountRepository.findById(userId).get())
