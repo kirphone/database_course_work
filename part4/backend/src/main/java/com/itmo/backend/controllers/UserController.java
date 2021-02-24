@@ -106,11 +106,11 @@ public class UserController {
         }});
     }
 
-    @PostMapping("/order/{id}/change_status/{status_name}")
-    public void changeStatus(@PathVariable("id") Integer orderId, @PathVariable("status_name") String statusName){
-        OrderEntity order = orderRepository.findById(orderId).get();
-        order.setStatus(statusOrderRepository.findByName(statusName).get());
-
+    @PostMapping("/order/{id}/change_status")
+    public void changeStatus(@PathVariable("id") Integer orderId){
+        Integer userId = ((AccountPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        orderRepository.updateStatusAndCourier(statusOrderRepository.findByName("Покупка товаров").get(),
+                accountRepository.findById(userId).get(), orderId);
     }
 }
 
