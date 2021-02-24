@@ -14,4 +14,8 @@ public interface ProductShopRepository extends JpaRepository<ProductShopEntity, 
     @Transactional
     @Query("select p from ProductShopEntity p where p.shop.id = ?1")
     List<ProductShopEntity> selectProductsByShopId(Integer shopId);
+
+    @Transactional
+    @Query("select p.price from ProductShopEntity p where p.shop.id = ?1 and p.product.id = ?2")
+    Float selectProductPriceByShopIdAndProductId(Integer shopId, Integer productId);
 }
