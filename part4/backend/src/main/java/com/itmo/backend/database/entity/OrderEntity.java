@@ -1,6 +1,7 @@
 package com.itmo.backend.database.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
@@ -11,7 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "order")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
-@JsonIgnoreProperties(value = {"shop", "customer", "messages", "products", "review"})
+@JsonIgnoreProperties(value = {"shop", "courier", "customer", "messages", "products", "review"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -39,6 +40,7 @@ public class OrderEntity {
     private AccountEntity courier;
 
     @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "status")
     private StatusOrderEntity status;
 

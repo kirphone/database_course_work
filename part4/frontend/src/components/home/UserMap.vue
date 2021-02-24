@@ -26,9 +26,7 @@ export default defineComponent({
     }
   },
   setup() {
-    //let center = { lat: 40.689247, lng: -74.044502 }
 
-    //return { center }
   },
   mounted() {
     navigator.geolocation.getCurrentPosition(pos => {
