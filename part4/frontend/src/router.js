@@ -7,6 +7,7 @@ import ShopCompaniesList from "@/components/shop/ShopCompaniesList";
 import store from "./store";
 import Basket from "@/components/basket/Basket";
 import Messager from "@/components/Messager";
+import Order from "@/components/Order";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -59,6 +60,16 @@ const router = createRouter({
         {
             path: '/message',
             component: Messager,
+            beforeEnter: (to, from, next) => {
+                if (hasToken())
+                    next();
+                else
+                    next("/auth");
+            }
+        },
+        {
+            path: '/orders',
+            component: Order,
             beforeEnter: (to, from, next) => {
                 if (hasToken())
                     next();

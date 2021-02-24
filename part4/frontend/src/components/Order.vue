@@ -4,20 +4,24 @@
     <tr>
       <th>Id заказа</th>
       <th>Имя курьера</th>
+      <th>Телефон курьера</th>
       <th>Сообщения</th>
       <th>Статус</th>
     </tr>
 
     <tr :key="item.id" v-for="item in orders">
       <td>{{ item.id }}</td>
-      <td>{{ item.name_courier }}</td>
+      <td>{{ item.courier != null ?  item.courier.name : '' }}</td>
+      <td>{{ item.courier != null ?  item.courier.phone : '' }}</td>
       <td v-on:click="message(item.id)">go to messages</td>
-      <td>{{ item.status }}</td>
+      <td>{{ item.status.name }}</td>
     </tr>
   </table>
 </template>
 
 <script>
+import axios_config from "@/axios_config";
+
 export default {
   name: "Order",
   data() {
@@ -30,7 +34,21 @@ export default {
       this.$router.push(`/message/${id}`)
     },
     fetch: function () {
-      this.orders = [{id: 1, name_courier: "Жан бек", status: "Ждем"}, {id: 2, status: "Пердим"}]
+      this.orders = axios_config.get("/user/orders")
+          .then(resp => {
+            console.log(resp.data)
+            this.orders = resp.data
+          })
+          .catch(e => {
+                if (e.response.status === 401) {
+                  this.$store.commit("removeToken")
+                  this.$router.push("/auth");
+                } else {
+                  this.errorMessage = "Магазины не найдены"
+                  this.$router.push("/error");
+                }
+              }
+          )
     }
   },
   created: function () {
@@ -39,7 +57,7 @@ export default {
   mounted: function () {
     window.setInterval(() => {
       this.fetch()
-    }, 5000)
+    }, 10000)
   }
 }
 </script>
