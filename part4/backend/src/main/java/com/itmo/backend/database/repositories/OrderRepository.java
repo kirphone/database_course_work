@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<OrderEntity, Integer> {
@@ -28,4 +29,8 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Integer> {
     @Modifying
     @Query("update OrderEntity o set o.status = ?1, o.courier = ?2 where o.id = ?3")
     int updateStatusAndCourier(StatusOrderEntity status, AccountEntity courier, Integer id);
+
+    @Transactional
+    @Query("select o.customer.name, o.customer.phone from OrderEntity o where o.id = ?1")
+    Object[] getCustomerNameAndPhoneByOrderId(Integer id);
 }

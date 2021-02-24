@@ -117,6 +117,11 @@ public class UserController {
     public ResponseEntity<List<OrderProductEntity>> getProductsByOrder(@PathVariable("id") Integer orderId){
         return ok(orderProductRepository.findByOrder(orderRepository.findById(orderId).get()));
     }
+
+    @GetMapping("/order/{id}/customer_info")
+    public ResponseEntity<Object[]> getCustomerInfoByOrder(@PathVariable("id") Integer orderId){
+        return ok(orderRepository.getCustomerNameAndPhoneByOrderId(orderId));
+    }
 }
 
 @Data
