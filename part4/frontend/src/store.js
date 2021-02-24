@@ -4,6 +4,7 @@ import createPersistedState from "vuex-persistedstate";
 
 const store = createStore({
     state: {
+        orderId : 1,
         shopId : "3",
         userId : "",
         token : "",
@@ -14,6 +15,10 @@ const store = createStore({
         }
     },
     mutations: {
+        setOrderId(state, orderId){
+            console.log(orderId)
+            state.orderId = orderId
+        },
         setShopId(state, shopId){
             state.shopId = shopId
         },
