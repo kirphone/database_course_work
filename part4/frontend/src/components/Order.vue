@@ -103,7 +103,7 @@ export default {
           )
     }
   },
-  created: function () {
+  setup: function () {
     this.fetch();
   }
 }

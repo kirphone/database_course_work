@@ -31,7 +31,7 @@ export default defineComponent({
   },
   methods:{
     step : function (shopId) {
-      console.log(1)
+      console.log(shopId)
       this.$store.commit('setShopId',shopId)
       this.$router.push("/basket")
     }

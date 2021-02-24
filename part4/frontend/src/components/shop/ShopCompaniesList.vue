@@ -19,7 +19,7 @@ export default {
       companies: []
     }
   },
-  created() {
+  setup() {
     this.fetchData()
   },
   methods: {
