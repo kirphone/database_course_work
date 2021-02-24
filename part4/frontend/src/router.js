@@ -5,9 +5,12 @@ import NotFoundError from "./components/NotFoundError";
 import ChooseRole from "./components/role/ChooseRole";
 import ShopCompaniesList from "@/components/shop/ShopCompaniesList";
 import store from "./store";
+import Basket from "@/components/basket/Basket";
+import Messager from "@/components/Messager";
 
 const router = createRouter({
     history: createWebHistory(),
+
     routes: [
         {
             path: "/auth",
@@ -43,6 +46,27 @@ const router = createRouter({
             }
         },
         {
+            path: '/basket',
+            component: Basket,
+            props: true,
+            beforeEnter: (to, from, next) => {
+                if (hasToken())
+                    next();
+                else
+                    next("/auth");
+            }
+        },
+        {
+            path: '/message',
+            component: Messager,
+            beforeEnter: (to, from, next) => {
+                if (hasToken())
+                    next();
+                else
+                    next("/auth");
+            }
+        },
+        {
             path: "/shop-company",
             name: "ShopCompaniesList",
             component: ShopCompaniesList,
@@ -65,7 +89,7 @@ const router = createRouter({
         {
             path: "/*",
             component: NotFoundError
-        }
+        },
     ]
 });
 

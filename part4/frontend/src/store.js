@@ -4,6 +4,8 @@ import createPersistedState from "vuex-persistedstate";
 
 const store = createStore({
     state: {
+        shopId : "3",
+        userId : "",
         token : "",
         tokenDate : null,
         isClient : true,
@@ -12,9 +14,15 @@ const store = createStore({
         }
     },
     mutations: {
+        setShopId(state, shopId){
+            state.shopId = shopId
+        },
         setToken(state, tokenString) {
             state.token = tokenString;
             state.tokenDate = new Date().getTime() + 3600000;
+        },
+        setUserId(state, userId) {
+            state.userId = userId;
         },
         removeToken(state){
           state.token = "";

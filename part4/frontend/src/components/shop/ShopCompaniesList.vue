@@ -26,7 +26,6 @@ export default {
     fetchData: function () {
       axios_config.get('shop/getShopCompanies')
           .then(response => {
-            console.log(response.data)
             this.companies = response.data
           })
           .catch(e => {
@@ -35,7 +34,7 @@ export default {
               this.$router.push("/auth");
             } else {
               this.errorMessage = "Магазины не найдены"
-              //this.$router.push("/error");
+              this.$router.push("/error");
             }
           });
     },
