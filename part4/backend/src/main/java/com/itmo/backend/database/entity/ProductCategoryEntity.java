@@ -3,9 +3,7 @@ package com.itmo.backend.database.entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -18,7 +16,8 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"products"})
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class ProductCategoryEntity {
 
     @Id

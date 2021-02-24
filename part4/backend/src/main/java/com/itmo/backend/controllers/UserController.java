@@ -46,6 +46,12 @@ public class UserController {
     @Autowired
     private ProductShopRepository productShopRepository;
 
+    @Autowired
+    private StatusOrderRepository statusOrderRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
     @GetMapping("/orders")
     public ResponseEntity<List<OrderEntity>> getOrdersAsCustomer() {
         Integer id = ((AccountPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
@@ -64,14 +70,17 @@ public class UserController {
         Integer id = ((AccountPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         OrderEntity order = OrderEntity.builder().customer(accountRepository.findById(id).get())
                 .address(new AddressEmbeddedEntity(req.getLat(), req.getLng()))
-                .shop(shopRepository.findById(req.getShopId()).get()).build();
+                .shop(shopRepository.findById(req.getShopId()).get())
+                .status(statusOrderRepository.findByName("Поиск курьера").get()).build();
 
         Integer orderId = orderRepository.save(order).getId();
 
         req.getProducts().forEach((product) -> {
             OrderProductEntity note = OrderProductEntity.builder().id(new OrderProductKey(orderId, product.getProductId()))
                     .productCount(product.getProductCount()).needConfirm(product.getNeedConfirm())
-                    .price(productShopRepository.selectProductPriceByShopIdAndProductId(req.getShopId(), product.getProductId())).build();
+                    .price(productShopRepository.selectProductPriceByShopIdAndProductId(req.getShopId(), product.getProductId()))
+                    .order(orderRepository.findById(orderId).get())
+                    .product(productRepository.findById(product.getProductId()).get()).build();
             orderProductRepository.save(note);
         });
         return ok(new HashMap<String, Integer>(){{

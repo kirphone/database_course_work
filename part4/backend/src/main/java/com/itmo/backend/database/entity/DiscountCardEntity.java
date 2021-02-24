@@ -1,8 +1,6 @@
 package com.itmo.backend.database.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,7 +9,8 @@ import java.util.Date;
 @Table(name = "discount_card")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class DiscountCardEntity {
 
     @Id
