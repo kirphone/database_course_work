@@ -1,5 +1,6 @@
 package com.itmo.backend.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -7,6 +8,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "order_product")
+@JsonIgnoreProperties(value = {"order"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

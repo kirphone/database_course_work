@@ -112,6 +112,11 @@ public class UserController {
         orderRepository.updateStatusAndCourier(statusOrderRepository.findByName("Покупка товаров").get(),
                 accountRepository.findById(userId).get(), orderId);
     }
+
+    @GetMapping("/order/{id}/products")
+    public ResponseEntity<List<OrderProductEntity>> getProductsByOrder(@PathVariable("id") Integer orderId){
+        return ok(orderProductRepository.findByOrder(orderRepository.findById(orderId).get()));
+    }
 }
 
 @Data
