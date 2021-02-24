@@ -59,7 +59,7 @@ public class UserController {
     }
 
     @GetMapping("/orders/all")
-    public ResponseEntity<List<AddressEmbeddedEntity>> getOrdersAsCourier(){
+    public ResponseEntity<List<Object[]>> getOrdersAsCourier(){
         return ok(orderRepository.findAllWithoutCourier());
     }
 
@@ -104,6 +104,13 @@ public class UserController {
         return ok(new HashMap<String, Integer>() {{
             put("messageId", messageId);
         }});
+    }
+
+    @PostMapping("/order/{id}/change_status/{status_name}")
+    public void changeStatus(@PathVariable("id") Integer orderId, @PathVariable("status_name") String statusName){
+        OrderEntity order = orderRepository.findById(orderId).get();
+        order.setStatus(statusOrderRepository.findByName(statusName).get());
+
     }
 }
 

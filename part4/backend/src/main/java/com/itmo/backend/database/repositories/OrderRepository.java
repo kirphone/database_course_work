@@ -18,6 +18,6 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Integer> {
     Optional<OrderEntity> findById(Integer integer);
 
     @Transactional
-    @Query(value = "select o.address from OrderEntity o where o.status = 'Поиск курьера'")
-    List<AddressEmbeddedEntity> findAllWithoutCourier();
+    @Query(value = "select o.address, o.id from OrderEntity o where o.status = 'Поиск курьера'")
+    List<Object[]> findAllWithoutCourier();
 }
