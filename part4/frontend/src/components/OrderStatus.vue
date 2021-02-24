@@ -1,25 +1,31 @@
 <template>
   <button @click="takeOrder()">Take order</button>
 
-  <H1>Описание заказа</H1>
+  <h1>Описание заказа</h1>
   <table>
     <tr>
-      <th>Магазин</th>
+      <th>Статус заказа</th>
       <th>Имя покупателя</th>
       <th>Телефон покупателя</th>
     </tr>
 
     <tr>
-      <td>{{ item.product.name }}</td>
-      <td>{{ item.product.description }}</td>
-      <td>{{ item.product.category.name }}</td>
+      <td>{{ orderInfo[0][2] }}</td>
+      <td>{{ orderInfo[0][0] }}</td>
+      <td>{{ orderInfo[0][1] }}</td>
     </tr>
   </table>
 
   <h1>Корзина</h1>
-<ul>
-  <li :key="item.id" v-for="item in basket"></li>
-</ul>
+  <ul>
+    <li :key="item.id.productId" v-for="item in basket">Название - {{item.product.name}} :
+      Цена - {{item.price}} :
+      Кол-во - {{item.productCount}} :
+      Нужно потверждение - {{item.needConfirm}} :
+
+
+    </li>
+  </ul>
 
   <div class="messages">
     <button class="but-1" @click="reFetchMess()">Обновить</button>
@@ -43,6 +49,7 @@ export default {
   name: "OrderStatus",
   data() {
     return {
+      infoOrder : {},
       basket : [],
       orderInfo : [],
       mess: "",
@@ -63,6 +70,23 @@ export default {
       this.reFetchMess()
     },
     reFetchMess: function () {
+      axios_config.get(`user/order/${this.$store.state.orderId}/customer_info`)
+          .then(resp => {
+            this.orderInfo = resp.data
+            console.log(this.orderInfo)
+          })
+          .catch(() => {
+            this.messages = []
+          })
+      axios_config.get(`user/order/${this.$store.state.orderId}/products`)
+          .then(resp => {
+            this.basket = resp.data
+            console.log(this.basket)
+          })
+          .catch(() => {
+            this.messages = []
+          })
+
       axios_config.get(`user/order/${this.$store.state.orderId}/messages`)
           .then(resp => {
             this.messages = resp.data
