@@ -18,7 +18,7 @@ create_accounts(200, cursor)
 #create_shops(cursor)
 #create_products(200, cursor)
 #create_messages(40, cursor)
-#create_orders(200, cursor)
+create_orders(200, cursor)
 #create_reviews(cursor)
 
 cursor.close()

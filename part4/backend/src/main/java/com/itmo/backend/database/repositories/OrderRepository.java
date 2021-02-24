@@ -1,17 +1,15 @@
 package com.itmo.backend.database.repositories;
 
-import com.itmo.backend.database.entity.AccountEntity;
 import com.itmo.backend.database.entity.OrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface AccountRepository extends JpaRepository<AccountEntity, Integer> {
+public interface OrderRepository extends JpaRepository<OrderEntity, Integer> {
 
-    Optional<AccountEntity> findByEmail(String email);
-
-    Optional<AccountEntity> findByPhone(String phone);
+    @Transactional
+    @Query("select o from OrderEntity o where o.customer.id = ?1")
+    List<OrderEntity> findOrderByUserId(Integer userId);
 }

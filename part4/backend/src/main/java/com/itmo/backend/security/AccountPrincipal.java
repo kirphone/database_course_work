@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
-class AccountPrincipal implements UserDetails {
+public class AccountPrincipal implements UserDetails {
     private AccountEntity account;
 
     public AccountPrincipal(AccountEntity account) {
