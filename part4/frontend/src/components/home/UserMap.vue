@@ -6,29 +6,40 @@
       :zoom="15"
       ref="mapRef"
   >
-    <Marker :options="{ position: center }" />
+    <Marker v-on:click="step(mar.id)" v-for="mar in markers" :key="mar.id" :options="{ position: {lat : mar.address.addressLat, lng:mar.address.addressLng} }"/>
   </GoogleMap>
 </template>
 
 <script>
 import {GoogleMap, Marker} from "vue3-google-map";
 import {defineComponent} from "vue";
+import axios_config from "@/axios_config";
 
 export default defineComponent({
   name: "UserMap",
-  components: { GoogleMap, Marker },
+  components: {GoogleMap, Marker},
   props: {
     googleMapApiKey: String
   },
-  data(){
+  data() {
     return {
-      center: {}
+      markers: []
     }
   },
   setup() {
 
   },
+  methods:{
+    step : function (shopId) {
+      console.log(1)
+      this.$store.commit('setShopId',shopId)
+      this.$router.push("/basket")
+    }
+  },
   mounted() {
+    axios_config.get("/shop/all").then(resp => {
+      this.markers = resp.data
+    })
     navigator.geolocation.getCurrentPosition(pos => {
       this.center = {lat: pos.coords.latitude, lng: pos.coords.longitude};
     }, err => {

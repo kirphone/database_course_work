@@ -33,12 +33,12 @@ export default {
     },
     next : function () {
       if(this.isClient != null){
-        if(this.isClient){
+        if(this.isClient !== true){
           this.$store.commit("isClient", false);
-          this.$router.push("orders-courier");
+          this.$router.push("/courier");
         }else{
           this.$store.commit("isClient", true);
-          this.$router.push("home");
+          this.$router.push("/home");
         }
       }
     }

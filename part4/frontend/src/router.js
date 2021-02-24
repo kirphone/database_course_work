@@ -7,6 +7,7 @@ import ShopCompaniesList from "@/components/shop/ShopCompaniesList";
 import store from "./store";
 import Basket from "@/components/basket/Basket";
 import Order from "@/components/Order";
+import CourierMap from "@/components/CourierMap";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -27,6 +28,17 @@ const router = createRouter({
             path: '/home',
             name: "home",
             component: Home,
+            beforeEnter: (to, from, next) => {
+                if (hasToken())
+                    next();
+                else
+                    next("/auth");
+            }
+        },
+        {
+            path: '/courier',
+            name: "courier",
+            component: CourierMap,
             beforeEnter: (to, from, next) => {
                 if (hasToken())
                     next();
