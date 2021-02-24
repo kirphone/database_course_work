@@ -17,6 +17,7 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class MessageEntity {
 
     @Id

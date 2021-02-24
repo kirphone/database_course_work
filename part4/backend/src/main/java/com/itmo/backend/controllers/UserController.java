@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Column;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,9 +55,9 @@ public class UserController {
 
     @GetMapping("/orders")
     public ResponseEntity<List<OrderEntity>> getOrdersAsCustomer() {
-        Integer id = ((AccountPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-        logger.info("Get orders for id=" + id);
-        List<OrderEntity> orders = orderRepository.findOrderByUserId(id);
+        Integer userId = ((AccountPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        logger.info("Get orders for id=" + userId);
+        List<OrderEntity> orders = orderRepository.findOrderByUserId(userId);
         return ok(orders);
     }
 
@@ -67,8 +68,8 @@ public class UserController {
 
     @PostMapping("/orders")
     public ResponseEntity<HashMap<String, Integer>> addOrder(@RequestBody OrderRequest req){
-        Integer id = ((AccountPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
-        OrderEntity order = OrderEntity.builder().customer(accountRepository.findById(id).get())
+        Integer userId = ((AccountPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        OrderEntity order = OrderEntity.builder().customer(accountRepository.findById(userId).get())
                 .address(new AddressEmbeddedEntity(req.getLat(), req.getLng()))
                 .shop(shopRepository.findById(req.getShopId()).get())
                 .status(statusOrderRepository.findByName("Поиск курьера").get()).build();
@@ -85,6 +86,18 @@ public class UserController {
         });
         return ok(new HashMap<String, Integer>(){{
             put("orderId", orderId);
+        }});
+    }
+
+    @PostMapping("/order/{id}/messages")
+    public ResponseEntity<HashMap<String, Integer>> addMessage(@PathVariable("id") Integer orderId, @RequestBody String messageText){
+        Integer userId = ((AccountPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        MessageEntity message = MessageEntity.builder().text(messageText).sendTime(OffsetDateTime.now())
+                .sender(accountRepository.findById(userId).get())
+                .order(orderRepository.findById(orderId).get()).build();
+        Integer messageId = messageRepository.save(message).getId();
+        return ok(new HashMap<String, Integer>(){{
+            put("messageId", messageId);
         }});
     }
 }
