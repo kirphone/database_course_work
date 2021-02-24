@@ -1,5 +1,6 @@
 package com.itmo.backend.database.repositories;
 
+import com.itmo.backend.database.entity.AddressEmbeddedEntity;
 import com.itmo.backend.database.entity.OrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +16,8 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Integer> {
     List<OrderEntity> findOrderByUserId(Integer userId);
 
     Optional<OrderEntity> findById(Integer integer);
+
+    @Transactional
+    @Query(value = "select o.address from OrderEntity o where o.status = 'Поиск курьера'")
+    List<AddressEmbeddedEntity> findAllWithoutCourier();
 }

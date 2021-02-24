@@ -58,6 +58,11 @@ public class UserController {
         return ok(orders);
     }
 
+    @GetMapping("/orders/all")
+    public ResponseEntity<List<AddressEmbeddedEntity>> getOrdersAsCourier(){
+        return ok(orderRepository.findAllWithoutCourier());
+    }
+
     @GetMapping("/order/{id}/messages")
     public ResponseEntity<List<MessageEntity>> getMessagesByOrder(@PathVariable("id") Integer orderId) {
         return ok(messageRepository.findByOrderId(orderId));
