@@ -1,5 +1,9 @@
 package com.itmo.backend.database.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +13,8 @@ import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "message")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIgnoreProperties(value = {"order"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -25,6 +31,7 @@ public class MessageEntity {
     private OffsetDateTime sendTime;
 
     @ManyToOne
+    @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "sender_id")
     private AccountEntity sender;
 

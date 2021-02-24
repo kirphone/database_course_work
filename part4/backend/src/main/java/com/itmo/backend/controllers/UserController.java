@@ -1,6 +1,8 @@
 package com.itmo.backend.controllers;
 
+import com.itmo.backend.database.entity.MessageEntity;
 import com.itmo.backend.database.entity.OrderEntity;
+import com.itmo.backend.database.repositories.MessageRepository;
 import com.itmo.backend.database.repositories.OrderRepository;
 import com.itmo.backend.security.AccountPrincipal;
 import org.slf4j.Logger;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,11 +28,19 @@ public class UserController {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private MessageRepository messageRepository;
+
     @GetMapping("/orders")
     public ResponseEntity<List<OrderEntity>> getOrdersAsCustomer() {
         Integer id = ((AccountPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
         logger.info("Get orders for id=" + id);
         List<OrderEntity> orders = orderRepository.findOrderByUserId(id);
         return ok(orders);
+    }
+
+    @GetMapping("/order/{id}/messages")
+    public ResponseEntity<List<MessageEntity>> getMessagesByOrder(@PathVariable("id") Integer orderId){
+        return ok(messageRepository.findByOrderId(orderId));
     }
 }
